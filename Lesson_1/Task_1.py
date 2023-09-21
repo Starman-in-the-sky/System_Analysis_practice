@@ -2,14 +2,14 @@ import argparse
 import csv
 
 parser = argparse.ArgumentParser()
-parser.add_argument("file", help="путь к файлу csv")
-parser.add_argument("row", type=int, help="номер строки")
-parser.add_argument("column", type=int, help="номер столбца")
+parser.add_argument('file', type=str, help='путь к файлу CSV')
+parser.add_argument('row', type=int, help='номер строки')
+parser.add_argument('col', type=int, help='номер столбца')
 args = parser.parse_args()
 
-with open(args.file, "r") as file:
-    reader = csv.reader(file)
-    for i, row in enumerate(reader):
-        if i == args.row - 1:
-            print(row[args.column - 1])
-            break
+with open(args.file, 'r') as f:
+    reader = csv.reader(f)
+    data = list(reader)
+
+value = data[args.row][args.col]
+print(value)
