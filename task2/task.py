@@ -1,20 +1,29 @@
-import argparse
 import csv
-def csv_parser():
-    parser = argparse.ArgumentParser()
+from collections import defaultdict
 
-    parser.add_argument('file', type=str, help='путь к файлу CSV')
-    parser.add_argument('row', type=int, help='номер строки')
-    parser.add_argument('col', type=int, help='номер столбца')
-    args = parser.parse_args()
+def task(var: str) -> str:
+    reader = csv.reader(var.split("\n"))
+    graph = defaultdict(set)
+    for row in reader:
+        if len(row) == 2:
+            graph[row[0]].add(row[1])
 
-    with open(args.file, 'r') as f:
-        reader = csv.reader(f)
-    data = list(reader)
+    relations = set(graph.keys()) | set.union(*graph.values())
+    ext_lens = defaultdict(dict)
 
-    value = data[args.row][args.col]
-    print(value)
+    for node in graph.keys():
+        for rel in relations:
+            ext_lens[node][rel] = 1 if rel in graph[node] else 0
 
-def task():
-    arr = {'r1': [], 'r2': [], 'r3': [], 'r4': [], 'r5': []}
-    return arr
+    for node in graph.keys():
+        for rel in relations:
+            if ext_lens[node][rel] == 1:
+                for parent in graph.keys():
+                    if node in graph[parent]:
+                        ext_lens[parent][rel] += 1
+
+    result = []
+    for node in sorted(graph.keys()):
+        result.append(",".join(str(ext_lens[node][rel]) for rel in sorted(relations)))
+
+    return "\n".join(result)
