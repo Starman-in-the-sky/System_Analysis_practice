@@ -1,1 +1,9 @@
-# System_Analysis_practice
+# Задание №6
+
+Пример вызова функции: 
+json_input = '[[3, 2, 1], [1, 3, 2], [2, 1, 3]]'
+result = task(json_input)
+print(result)
+
+Вывод:
+[0.333, 0.333, 0.333]
